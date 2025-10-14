@@ -10,6 +10,7 @@ const router = express.Router();
 
 /* -------------------- CREATE -------------------- */
 // 🟢 Đặt sân
+// 🟢 Đặt sân
 router.post("/", auth, async (req, res) => {
   try {
     const { field_id, booking_date, time_slot, sport_type } = req.body;
@@ -25,35 +26,65 @@ router.post("/", auth, async (req, res) => {
     const field = await fieldModel.findById(field_id);
     if (!field) return res.status(404).json({ message: "Không tìm thấy sân" });
 
-    // Tạo booking mới và lưu snapshot thông tin sân
+    // 🕓 Chuẩn hóa ngày (chỉ lấy phần yyyy-mm-dd, bỏ phần giờ)
+    const normalizedDate = new Date(booking_date);
+    normalizedDate.setHours(0, 0, 0, 0);
+
+    // ✅ --- KIỂM TRA TRÙNG LỊCH ---
+    // 🟩 Chế độ 1: chỉ cấm trùng "sân + ngày + khung giờ"
+    const existingBooking = await Booking.findOne({
+      field_id,
+      booking_date: normalizedDate,
+      time_slot,
+      status: { $ne: "cancelled" },
+    });
+
+    // 🟦 Chế độ 2 (nếu bạn muốn cấm trùng toàn hệ thống, bật dòng này lên và tắt dòng trên)
+    /*
+    const existingBooking = await Booking.findOne({
+      booking_date: normalizedDate,
+      time_slot,
+      status: { $ne: "cancelled" },
+    });
+    */
+
+    if (existingBooking) {
+      return res.status(400).json({
+        message: "⚠️ Khung giờ này đã được đặt, vui lòng chọn thời gian khác.",
+      });
+    }
+
+    // ✅ Nếu chưa ai đặt thì cho đặt
     const booking = new Booking({
       field_id,
       sport_type,
       user: req.user.id,
-      booking_date: new Date(booking_date),
+      booking_date: normalizedDate,
       time_slot,
       field_name: field.name || "",
       field_price: field.price ?? null,
-      field_location: field.location || field.area || ""
+      field_location: field.location || field.area || "",
     });
 
     await booking.save();
 
-    // Trả về chỉ thông tin cần thiết (không trả status, booking_date)
     res.json({
-      message: "✅ Đặt sân thành công",
+      message: "✅ Đặt sân thành công!",
       booking: {
         _id: booking._id,
         field_name: booking.field_name,
         field_price: booking.field_price,
-        field_location: booking.field_location
-      }
+        field_location: booking.field_location,
+        booking_date: booking.booking_date,
+        time_slot: booking.time_slot,
+      },
     });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "❌ Lỗi khi đặt sân", error: err.message });
+    console.error("❌ Lỗi khi đặt sân:", err);
+    res.status(500).json({ message: "Lỗi server khi đặt sân" });
   }
 });
+
 
 /* -------------------- READ -------------------- */
 // 🟣 Xem booking của user hiện tại (chỉ trả name, price, location, _id)
@@ -155,5 +186,31 @@ router.delete("/cancelled/:id", auth, async (req, res) => {
     res.status(500).json({ message: "Lỗi server khi xóa lịch sử hủy" });
   }
 });
+
+// 🟢 API: lấy khung giờ đã đặt theo sân + ngày
+router.get("/booked-slots/:fieldId/:date", async (req, res) => {
+  try {
+    const { fieldId, date } = req.params;
+
+    // Chuyển đổi ngày để lọc trong MongoDB
+    const startOfDay = new Date(date);
+    startOfDay.setHours(0, 0, 0, 0);
+    const endOfDay = new Date(date);
+    endOfDay.setHours(23, 59, 59, 999);
+
+    const bookings = await Booking.find({
+      field_id: fieldId,
+      booking_date: { $gte: startOfDay, $lte: endOfDay },
+      status: "booked",
+    });
+
+    const bookedSlots = bookings.map((b) => b.time_slot);
+    res.json(bookedSlots);
+  } catch (err) {
+    console.error("Lỗi lấy booked slots:", err);
+    res.status(500).json({ message: "Lỗi server khi lấy booked slots" });
+  }
+});
+
 
 export default router;

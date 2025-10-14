@@ -13,68 +13,41 @@ const seed = async () => {
     await mongoose.connect(MONGO_URI);
     console.log("✅ Đã kết nối MongoDB");
 
-    // 🧹 Xóa dữ liệu cũ
+    // 🏟️ Xóa dữ liệu cũ
     await FootballField.deleteMany();
     await BasketballField.deleteMany();
     await TennisField.deleteMany();
 
-    // ⚽ Dữ liệu sân bóng đá (mỗi sân có nhiều khung giờ & giá khác nhau)
-// ⚽ Dữ liệu sân bóng đá
-const footballs = [
-  {
-    name: "Sân 7A",
-    size: "7 người",
-    location: "Khu A",
-    timeSlots: [
-      { slot: "17:00-18:00", price: 300000 },
-      { slot: "18:00-19:00", price: 250000 },
-      { slot: "19:00-20:00", price: 200000 },
-    ],
-  },
-  {
-    name: "Sân 5A",
-    size: "5 người",
-    location: "Khu B",
-    timeSlots: [
-      { slot: "17:00-18:00", price: 200000 },
-      { slot: "18:00-19:00", price: 180000 },
-      { slot: "19:00-20:00", price: 160000 },
-    ],
-  },
-];
+    // ⚽ Dữ liệu sân bóng đá
+    const footballs = [
+      { name: "Sân 7A", size: "7 người", price: 250000, location: "Khu A" },
+      { name: "Sân 7B", size: "7 người", price: 250000, location: "Khu A" },
+      { name: "Sân 7C", size: "7 người", price: 250000, location: "Khu A" },
+      { name: "Sân 7D", size: "7 người", price: 250000, location: "Khu A" },
+      { name: "Sân 5-1", size: "5 người", price: 180000, location: "Khu B" },
+      { name: "Sân 5-2", size: "5 người", price: 180000, location: "Khu B" },
+    ];
 
-// 🏀 Bóng rổ
-const basketballs = [
-  {
-    name: "Sân R1",
-    location: "Khu C",
-    timeSlots: [
-      { slot: "17:00-18:00", price: 250000 },
-      { slot: "18:00-19:00", price: 230000 },
-      { slot: "19:00-20:00", price: 210000 },
-    ],
-  },
-];
+    // 🏀 Dữ liệu sân bóng rổ
+    const basketballs = [
+      { name: "Sân A1", price: 300000, location: "Khu C" },
+      { name: "Sân A2", price: 300000, location: "Khu C" },
+    ];
 
-// 🎾 Tennis
-const tennis = [
-  {
-    name: "Sân T1",
-    location: "Khu D",
-    timeSlots: [
-      { slot: "17:00-18:00", price: 200000 },
-      { slot: "18:00-19:00", price: 190000 },
-    ],
-  },
-];
-
+    // 🎾 Dữ liệu sân tennis
+    const tennis = [
+      { name: "Sân A1", price: 200000, location: "Khu D" },
+      { name: "Sân A2", price: 200000, location: "Khu D" },
+      { name: "Sân A3", price: 200000, location: "Khu D" },
+      { name: "Sân A4", price: 200000, location: "Khu D" },
+    ];
 
     // ✅ Lưu vào MongoDB
     await FootballField.insertMany(footballs);
     await BasketballField.insertMany(basketballs);
     await TennisField.insertMany(tennis);
 
-    console.log("🎉 Dữ liệu sân (có khung giờ) đã được thêm thành công!");
+    console.log("🎉 Dữ liệu sân đã được thêm thành công!");
     process.exit();
   } catch (err) {
     console.error("❌ Lỗi seed dữ liệu:", err);
