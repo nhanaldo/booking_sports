@@ -10,22 +10,42 @@ import bookingRoutes from "./src/routes/bookings.js";
 import adminRoutes from "./src/routes/admin.js";
 import User from "./src/models/User.js";
 import timeSlotRoutes from "./src/routes/timeSlots.js";
+import adminFields from "./src/routes/adminFields.js";
+import paymentRoute from "./src/routes/paymentRoute.js";
+import promotionRoutes from "./src/routes/promotionRoutes.js";
+ // 👉 Giữ file này
+import http from "http";
+import { Server } from "socket.io";
+import reviewRoutes from "./src/routes/reviews.js";
 
+dotenv.config();
 
-dotenv.config();//load các biến từ file .env.
 const app = express();
+const server = http.createServer(app);
 
 app.use(cors());
-app.use(express.json()); // app.use(express.json()) → cho phép nhận JSON trong request body.
-app.use("/api", sportsRoutes);
-app.use("/api/timeslots", timeSlotRoutes);
+app.use(express.json());
 
-// ✅ Kết nối MongoDB + tạo admin mặc định
-mongoose.connect(process.env.MONGO_URI)
+// ⚡ Socket.IO
+const io = new Server(server, {
+  cors: { origin: "*" },
+  pingTimeout: 60000,
+  pingInterval: 25000,
+});
+global._io = io;
+
+io.on("connection", (socket) => {
+  console.log("⚡ Client connected:", socket.id);
+  socket.on("disconnect", () => console.log("❌ Client disconnected:", socket.id));
+});
+
+// ⚡ Connect MongoDB
+mongoose
+  .connect(process.env.MONGO_URI)
   .then(async () => {
     console.log("✅ MongoDB connected");
 
-    // 👉 Tạo admin mặc định nếu chưa có
+    // 👉 Tạo admin mặc định
     const adminEmail = "admin@example.com";
     const exist = await User.findOne({ email: adminEmail });
 
@@ -36,20 +56,29 @@ mongoose.connect(process.env.MONGO_URI)
         email: adminEmail,
         password: hashedPassword,
         phone: "0123456789",
-        role: "admin"
+        role: "admin",
       });
-      console.log("✅ Admin user created (email: admin@example.com / pass: 123456)");
+      console.log("✅ Default Admin Created");
     }
   })
-  .catch((err) => console.error("❌ MongoDB connection error:", err));
+  .catch((err) => console.error("❌ MongoDB error:", err));
 
-// ✅ Routes
+// ⚡ Routes
 app.get("/", (req, res) => res.send("API Running..."));
+app.use("/api", sportsRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/timeslots", timeSlotRoutes);
 app.use("/api/fields", fieldRoutes);
 app.use("/api/bookings", bookingRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/admin/fields", adminFields);  
+app.use("/api/payment", paymentRoute);
+app.use("/api/promotions", promotionRoutes); // 👉 Chỉ để 1 lần duy nhất
+app.use("/api/reviews", reviewRoutes);
 
-// ✅ Khởi chạy server
+
+// ⚡ Server start
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
+server.listen(PORT, () =>
+  console.log(`⚡ Server + Socket running on port ${PORT}`)
+);

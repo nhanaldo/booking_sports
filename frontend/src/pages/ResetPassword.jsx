@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import API from "../api";
+import "./ResetPassword.css";
 
 export default function ResetPassword() {
   const { token } = useParams();
@@ -19,16 +20,32 @@ export default function ResetPassword() {
   };
 
   return (
-    <form onSubmit={submit} style={{ display: "grid", gap: 8, maxWidth: 320 }}>
-      <h2>Đặt lại mật khẩu</h2>
-      <input
-        type="password"
-        placeholder="Mật khẩu mới"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
-      <button>Xác nhận</button>
-    </form>
+    <div className="rp-container">
+      {/* LEFT */}
+      <div className="rp-left">
+        <form className="rp-card" onSubmit={submit}>
+          <h2 className="rp-title">Đặt lại mật khẩu</h2>
+
+          <input
+            type="password"
+            className="rp-input"
+            placeholder="Mật khẩu mới"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+
+          <button className="rp-btn">Xác nhận</button>
+        </form>
+      </div>
+
+      {/* RIGHT */}
+      <div className="rp-right">
+        <h1 className="rp-banner-title">Tạo mật khẩu mới</h1>
+        <p className="rp-banner-desc">
+          Hãy đặt một mật khẩu mạnh để bảo vệ tài khoản của bạn.
+        </p>
+      </div>
+    </div>
   );
 }

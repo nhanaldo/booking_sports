@@ -1,0 +1,67 @@
+/* Layout tổng */
+.fieldtype-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #0d1b2a;
+  padding: 40px 0;
+}
+
+.fieldtype-container {
+  background: #1b263b;
+  padding: 40px 35px;
+  width: 600px;
+  border-radius: 18px;
+  color: white;
+  text-align: center;
+  box-shadow: 0 0 25px rgba(0,0,0,0.25);
+}
+
+/* Tiêu đề */
+.fieldtype-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+
+/* Hàng nút */
+.fieldtype-row {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Nút chung */
+.fieldtype-btn {
+  padding: 15px 20px;
+  font-size: 20px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  color: white;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+/* Từng loại nút */
+.fieldtype-football {
+  background: #1f7a34;
+}
+.fieldtype-football:hover {
+  background: #2da544;
+}
+
+.fieldtype-basketball {
+  background: #c65e00;
+}
+.fieldtype-basketball:hover {
+  background: #e37208;
+}
+
+.fieldtype-tennis {
+  background: #0a8fdd;
+}
+.fieldtype-tennis:hover {
+  background: #0ca5ff;
+}

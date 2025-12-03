@@ -9,3 +9,4 @@ const fieldSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 export default mongoose.model("Field", fieldSchema);
+  

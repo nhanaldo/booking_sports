@@ -1,0 +1,119 @@
+/* Layout tổng */
+.field-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 40px 0;
+  background: #0d1b2a;
+  min-height: 100vh;
+}
+
+.field-container {
+  width: 900px;
+  background: #1b263b;
+  padding: 35px;
+  border-radius: 18px;
+  color: white;
+  box-shadow: 0 0 25px rgba(0,0,0,0.2);
+}
+
+/* Header */
+.field-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.field-back-btn {
+  background: #415a77;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.field-back-btn:hover {
+  background: #527198;
+}
+
+.field-title {
+  font-size: 26px;
+  font-weight: bold;
+}
+
+.field-description {
+  margin-top: 10px;
+  opacity: 0.85;
+}
+
+/* Form layout */
+.field-form {
+  margin-top: 25px;
+}
+
+.field-row {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 22px;
+}
+
+.field-input-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.field-label {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.field-input,
+.field-select {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: none;
+  background: #e0e6ed;
+  outline: none;
+  font-size: 15px;
+}
+
+.field-note {
+  margin-top: 5px;
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+/* Buttons */
+.field-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 25px;
+}
+
+.field-reset-btn {
+  padding: 10px 20px;
+  background: transparent;
+  border: 2px solid #bbb;
+  color: #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.field-reset-btn:hover {
+  background: #2e3b4e;
+}
+
+.field-submit-btn {
+  padding: 12px 25px;
+  background: #0098ff;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.field-submit-btn:hover {
+  background: #007acc;
+}

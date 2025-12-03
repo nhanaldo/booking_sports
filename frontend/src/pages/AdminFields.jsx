@@ -1,114 +1,60 @@
-import { useEffect, useState } from "react";
-import API from "../api";
+import express from "express";
+import FootballField from "../models/FootballField.js";
+import BasketballField from "../models/BasketballField.js";
+import TennisField from "../models/TennisField.js";
 
-export default function AdminFields() {
-  const [fields, setFields] = useState([]);
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
-  const [editing, setEditing] = useState(null);
+const router = express.Router();
 
-  // Lấy danh sách sân
-  const loadFields = async () => {
-    try {
-      const res = await API.get("/admin/fields");
-      setFields(res.data);
-    } catch (err) {
-      alert(err.response?.data?.message || "Lỗi load fields");
-    }
-  };
+// lấy tất cả sân theo loại
+router.get("/:type", async (req, res) => {
+  try {
+    const { type } = req.params;
+    let fields = [];
 
-  useEffect(() => {
-    loadFields();
-  }, []);
+    if (type === "football") fields = await FootballField.find();
+    else if (type === "basketball") fields = await BasketballField.find();
+    else if (type === "tennis") fields = await TennisField.find();
+    else return res.status(400).json({ message: "Loại sân không hợp lệ" });
 
-  // Thêm hoặc cập nhật sân
-  const saveField = async (e) => {
-    e.preventDefault();
-    try {
-      if (editing) {
-        await API.put(`/admin/fields/${editing}`, { name, price });
-        alert("✅ Cập nhật sân thành công");
-      } else {
-        await API.post("/admin/fields", { name, price });
-        alert("✅ Thêm sân thành công");
-      }
-      setName("");
-      setPrice("");
-      setEditing(null);
-      loadFields();
-    } catch (err) {
-      alert(err.response?.data?.message || "Lỗi khi lưu sân");
-    }
-  };
+    res.json(fields);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 
-  // Chỉnh sửa
-  const editField = (field) => {
-    setEditing(field._id);
-    setName(field.name);
-    setPrice(field.price);
-  };
+// lấy sân cụ thể theo ID và loại
+router.get("/:type/:id", async (req, res) => {
+  try {
+    const { type, id } = req.params;
+    let field;
 
-  // Xóa sân
-  const deleteField = async (id) => {
-    if (!window.confirm("Bạn có chắc muốn xóa sân này?")) return;
-    try {
-      await API.delete(`/admin/fields/${id}`);
-      alert("🗑️ Xóa sân thành công");
-      loadFields();
-    } catch (err) {
-      alert(err.response?.data?.message || "Lỗi khi xóa sân");
-    }
-  };
+    if (type === "football") field = await FootballField.findById(id);
+    else if (type === "basketball") field = await BasketballField.findById(id);
+    else if (type === "tennis") field = await TennisField.findById(id);
 
-  return (
-    <div style={{ maxWidth: 600, margin: "auto" }}>
-      <h2>⚽ Quản lý sân</h2>
+    if (!field) return res.status(404).json({ message: "Không tìm thấy sân" });
+    res.json(field);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 
-      <form onSubmit={saveField} style={{ display: "grid", gap: 8, marginBottom: 20 }}>
-        <input
-          placeholder="Tên sân"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-        <input
-          type="number"
-          placeholder="Giá sân"
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
-          required
-        />
-        <button type="submit">
-          {editing ? "💾 Cập nhật" : "➕ Thêm sân"}
-        </button>
-        {editing && (
-          <button type="button" onClick={() => { setEditing(null); setName(""); setPrice(""); }}>
-            ❌ Hủy
-          </button>
-        )}
-      </form>
+// cập nhật sân
+router.put("/:type/:id", async (req, res) => {
+  try {
+    const { type, id } = req.params;
+    const data = req.body;
+    let updated;
 
-      <table border="1" cellPadding="8" style={{ width: "100%" }}>
-        <thead>
-          <tr>
-            <th>Tên sân</th>
-            <th>Giá</th>
-            <th>Hành động</th>
-          </tr>
-        </thead>
-        <tbody>
-          {fields.map((f) => (
-            <tr key={f._id}>
-              <td>{f.name}</td>
-              <td>{f.price}</td>
-              <td>
-                <button onClick={() => editField(f)}>✏️ Sửa</button>
-                <button onClick={() => deleteField(f._id)}>🗑️ Xóa</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-}
+    if (type === "football") updated = await FootballField.findByIdAndUpdate(id, data, { new: true });
+    else if (type === "basketball") updated = await BasketballField.findByIdAndUpdate(id, data, { new: true });
+    else if (type === "tennis") updated = await TennisField.findByIdAndUpdate(id, data, { new: true });
+
+    if (!updated) return res.status(404).json({ message: "Không tìm thấy sân" });
+    res.json({ message: "Cập nhật thành công", updated });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+export default router;

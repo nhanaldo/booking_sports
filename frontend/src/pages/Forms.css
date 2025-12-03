@@ -1,0 +1,270 @@
+/* =======================================================
+   PREMIUM NeoSport GLASS UI – made for SportField Booking
+   ======================================================= */
+
+:root {
+  --bg-gradient: radial-gradient(circle at 30% 20%, #1b2a41 0%, #0f172a 60%, #0a0f1c 100%);
+  --glass: rgba(255, 255, 255, 0.06);
+  --glass-border: rgba(255, 255, 255, 0.12);
+
+  --text-main: #eef7ff;
+  --text-muted: rgba(255, 255, 255, 0.75);
+
+  --primary-1: #06b6d4;
+  --primary-2: #0ea5e9;
+
+  --success-1: #16a34a;
+  --success-2: #22c55e;
+
+  --danger-1: #d32f2f;
+  --danger-2: #ff6b6b;
+}
+
+/* -------------------------------------------------------
+   BACKGROUND MAIN PAGE
+-------------------------------------------------------- */
+.form-page {
+  min-height: 100vh;
+  padding: 50px 20px;
+  display: flex;
+  justify-content: center;
+  background: var(--bg-gradient);
+  font-family: "Inter", sans-serif;
+}
+
+/* -------------------------------------------------------
+   CARD – glass effect smooth
+-------------------------------------------------------- */
+.form-card {
+  width: 100%;
+  max-width: 760px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  padding: 32px;
+  border-radius: 18px;
+
+  backdrop-filter: blur(14px);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45);
+
+  color: var(--text-main);
+  animation: fadeIn 0.4s;
+}
+
+.form-card h2 {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+/* -------------------------------------------------------
+   VOUCHER + FIELD INFO
+-------------------------------------------------------- */
+.field-info p {
+  margin: 6px 0;
+  font-size: 15px;
+  color: var(--text-muted);
+}
+
+/* -------------------------------------------------------
+   BUTTONS — premium glowing buttons
+-------------------------------------------------------- */
+
+.btn {
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.25s;
+}
+
+/* ghost */
+.btn-ghost {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.15);
+  color: var(--text-main);
+}
+.btn-ghost:hover {
+  background: rgba(255,255,255,0.08);
+}
+
+/* primary */
+.btn-primary {
+  background: linear-gradient(90deg, var(--primary-1), var(--primary-2));
+  color: #072025;
+}
+.btn-primary:hover {
+  box-shadow: 0 8px 25px rgba(14,165,233,0.35);
+  transform: translateY(-2px);
+}
+
+/* MoMo button */
+.btn-momo {
+  background: linear-gradient(90deg, #a50064, #ea1e63);
+  color: white;
+}
+.btn-momo:hover {
+  box-shadow: 0 8px 25px rgba(190, 0, 120, 0.45);
+  transform: translateY(-2px);
+}
+
+/* row of buttons */
+.form-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 25px;
+}
+
+/* -------------------------------------------------------
+    MODAL — glass popup clean
+-------------------------------------------------------- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(6px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99;
+}
+
+.modal-box {
+  width: 400px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  padding: 24px;
+  border-radius: 16px;
+  color: white;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.55);
+  animation: fadeIn 0.25s;
+  margin-top: 160px;
+}
+
+.modal-box h3 {
+  text-align: center;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+/* -------------------------------------------------------
+   VOUCHER ITEM — beautiful, premium
+-------------------------------------------------------- */
+.voucher-item {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  padding: 14px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  transition: 0.25s;
+  cursor: pointer;
+}
+
+.voucher-item:hover {
+  background: rgba(6,182,212,0.18);
+  transform: translateY(-2px);
+}
+
+/* disabled */
+.voucher-item.disabled {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+/* selected */
+.voucher-item.selected {
+  background: rgba(34,197,94,0.18);
+  border: 2px solid #22c55e;
+}
+
+.selected-label {
+  position: absolute;
+  right: 15px;
+  top: 12px;
+  font-size: 12px;
+  background: #22c55e;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+/* -------------------------------------------------------
+    TOAST — success message
+-------------------------------------------------------- */
+.toast {
+  position: fixed;
+  top: 35px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  padding: 14px 26px;
+  background: linear-gradient(90deg, var(--success-1), var(--success-2));
+  border-radius: 12px;
+  font-weight: 600;
+  color: white;
+
+  animation: slideDown 0.5s ease-out, fadeOut 3.5s ease-in forwards;
+  z-index: 9999;
+}
+
+@keyframes slideDown {
+  from { transform: translate(-50%, -40px); opacity: 0; }
+  to   { transform: translate(-50%, 0);     opacity: 1; }
+}
+
+@keyframes fadeOut {
+  0%, 70% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, 20px); }
+}
+
+/* -------------------------------------------------------
+   ANIMATION
+-------------------------------------------------------- */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.voucher-item {
+  padding: 12px;
+  border-radius: 8px;
+  background: #ffffff10;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.voucher-item.active:hover {
+  background: #ffffff22;
+}
+
+.voucher-item.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+  user-select: none;
+}
+
+.voucher-item.selected {
+  border: 2px solid #4caf50;
+}
+
+.selected-label {
+  color: #4caf50;
+  font-weight: bold;
+}
+.voucher-item.disabled {
+  opacity: 0.4;
+  filter: grayscale(0.8);
+  pointer-events: none;  /* Không cho bấm */
+}
+
+.voucher-item.active {
+  cursor: pointer;
+  border: 1px solid #4caf50;
+}
+
+.voucher-item.selected {
+  border: 2px solid #ff9800;
+  background: #fffbe6;
+}

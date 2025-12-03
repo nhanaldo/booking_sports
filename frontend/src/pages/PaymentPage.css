@@ -1,0 +1,223 @@
+/* ====================== PAGE ====================== */
+.pay-page {
+  min-height: 100vh;
+  background: #f5f6fa;
+  padding: 40px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  
+}
+
+/* ====================== MAIN WRAPPER (2 COLUMNS) ====================== */
+.pay-wrapper {
+  width: 100%;
+  max-width: 1100px;
+  background: #fff;
+  border-radius: 18px;
+  padding: 30px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+  display: flex;
+  gap: 35px;
+  animation: fadeIn 0.25s ease;
+}
+
+/* LEFT COLUMN */
+.pay-left {
+  flex: 1.1;
+}
+
+/* RIGHT COLUMN */
+.pay-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pay-image {
+  width: 100%;
+  height: 360px;
+  object-fit: cover;
+  border-radius: 18px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  margin-bottom: 20px;
+}
+
+/* ====================== TITLES ====================== */
+.pay-title {
+  font-size: 26px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ====================== INFO BLOCK ====================== */
+.info-block {
+  background: #fafafa;
+  padding: 18px;
+  border-radius: 14px;
+  font-size: 15px;
+  line-height: 1.7;
+  margin-bottom: 25px;
+  border-left: 4px solid #4caf50;
+}
+
+.discount-line {
+  color: #0a7d27;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+/* ====================== BUTTONS ====================== */
+.btn-light {
+  background: #eee;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.btn-light:hover {
+  background: #e0e0e0;
+}
+
+/* Main buttons group */
+.pay-buttons {
+  margin-top: 20px;
+  display: flex;
+  gap: 15px;
+}
+
+/* Shared button */
+.btn-primary,
+.btn-blue,
+.btn-gray,
+.btn-momo {
+  border: none;
+  padding: 12px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: 0.2s;
+  font-weight: 600;
+}
+
+.btn-primary { background: #007bff; color: #fff; }
+.btn-primary:hover { background: #006ae0; }
+
+.btn-blue { background: #6c63ff; color: white; }
+.btn-blue:hover { background: #5a52e8; }
+
+.btn-gray { background: #ededed; color: #333; }
+.btn-gray:hover { background: #dcdcdc; }
+
+.btn-momo { background: #a50064; color: white; }
+.btn-momo:hover { background: #8a0053; }
+
+.btn-gray:disabled,
+.btn-momo:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ====================== TOAST ====================== */
+.pay-toast {
+  margin-top: 15px;
+  text-align: center;
+  background: #e0ffe4;
+  color: #0b8610;
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+/* ====================== MODAL ====================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(2px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-box {
+  width: 92%;
+  max-width: 900px;
+  background: white;
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+  animation: fadeUp 0.3s ease;
+  margin-top: 150px;
+}
+
+/* Modal buttons */
+.modal-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ====================== VOUCHERS ====================== */
+.voucher-list {
+  max-height: 300px;
+  overflow-y: auto;
+  margin: 15px 0;
+}
+
+.voucher-item {
+  padding: 14px;
+  background: #f7f7f7;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: 0.25s;
+}
+
+.voucher-item:hover { background: #ececec; }
+
+.voucher-item.disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.voucher-item.selected {
+  border-color: #28a745;
+  background: #eaffed;
+}
+
+.tag-selected {
+  color: #28a745;
+  font-size: 13px;
+  font-weight: bold;
+  text-align: right;
+  display: block;
+}
+
+/* ====================== RESPONSIVE ====================== */
+@media (max-width: 900px) {
+  .pay-wrapper {
+    flex-direction: column;
+  }
+
+  .pay-image {
+    height: 260px;
+  }
+}
+
+/* ====================== ANIMATIONS ====================== */
+@keyframes fadeUp {
+  from { transform: translateY(15px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

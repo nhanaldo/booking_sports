@@ -1,0 +1,83 @@
+/* Tổng trang */
+.admin-reviews-page {
+  padding: 30px;
+  background: #ffffff;
+  min-height: 100vh;
+  font-family: "Inter", sans-serif;
+}
+
+/* Tiêu đề */
+.admin-reviews-page h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #0b3e81;
+  margin-bottom: 25px;
+}
+
+/* Khung danh sách */
+.reviews-list {
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #e1e1e1;
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+/* Từng item */
+.review-item {
+  padding: 15px 20px;
+  border-bottom: 1px solid #e9e9e9;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.review-item:last-child {
+  border-bottom: none;
+}
+
+/* Tên người đánh giá */
+.review-item h4 {
+  margin: 0;
+  font-size: 18px;
+  color: #0b3e81;
+  font-weight: 600;
+}
+
+/* Bình luận */
+.review-item p {
+  margin: 0;
+  color: #444;
+  font-size: 15px;
+}
+
+/* Số sao */
+.review-item span {
+  font-weight: bold;
+  color: #ffa500;
+  margin-top: 3px;
+}
+
+/* Nút xóa */
+.delete-btn {
+  margin-top: 8px;
+  width: 90px;
+  padding: 8px 0;
+  background: #e63939;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.delete-btn:hover {
+  background: #c92e2e;
+}
+
+.review-date {
+  font-size: 13px;
+  color: #777;
+  margin-bottom: 5px;
+}

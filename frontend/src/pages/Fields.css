@@ -1,0 +1,110 @@
+/* Styles for fields listing pages */
+.fields-page{ display:flex; align-items:flex-start; justify-content:center; font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial; background: linear-gradient(135deg,#0f1724,#12263a);}
+.fields-page-inner{background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02)); border-radius:12px; padding:28px; width:100%;  border:1px solid rgba(255,255,255,0.04); color: #e6f0f6}
+.fields-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.fields-title{font-size:22px;font-weight:800;color:#ffffff}
+.fields-sub{font-size:13px;color:rgba(255,255,255,0.75)}
+.decor{height:6px;width:160px;background:linear-gradient(90deg,#00c6ff,#0072ff);border-radius:999px;margin-bottom:12px;box-shadow:0 8px 20px rgba(0,198,255,0.06)}
+
+.search-row{display:flex;gap:12px;align-items:center}
+.search-input{padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);min-width:220px;background:transparent;color:#fff}
+.search-input::placeholder{color:rgba(255,255,255,0.6)}
+.count-badge{font-size:13px;color:rgba(255,255,255,0.85)}
+
+.types-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-top:18px}
+.type-card{background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:12px;padding:22px;display:flex;flex-direction:column;gap:12px;align-items:flex-start;box-shadow:0 10px 30px rgba(2,6,23,0.06);cursor:pointer;border:1px solid rgba(255,255,255,0.03);transition:transform .12s ease}
+.type-card:hover{transform:translateY(-6px)}
+.type-card .icon{font-size:28px;width:52px;height:52px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff}
+.type-title{font-weight:800;font-size:18px;color:#fff}
+.type-desc{color:rgba(255,255,255,0.75);font-size:14px}
+
+.fields-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:18px;margin-top:14px}
+.field-card{background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:12px;padding:16px;display:flex;flex-direction:column;align-items:center;gap:12px;box-shadow:0 12px 28px rgba(2,6,23,0.06);border:1px solid rgba(255,255,255,0.03);transition:transform .18s ease, box-shadow .18s ease;position:relative;border-left:6px solid transparent}
+.field-card:hover{transform:translateY(-6px);box-shadow:0 22px 46px rgba(2,6,23,0.12)}
+.field-icon{width:84px;height:84px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:34px;color:#fff;box-shadow:0 10px 24px rgba(2,6,23,0.12)}
+.field-name{font-weight:800;color:#e6f0f6}
+.field-cta{margin-top:6px;width:100%;display:flex;gap:8px}
+.btn{padding:10px 12px;border-radius:8px;border:0;cursor:pointer;font-weight:700}
+.btn-primary{flex:1;background:linear-gradient(90deg,var(--accent-from),var(--accent-to));color:#052029}
+.btn-secondary{flex:1;background:transparent;border:1px solid rgba(6,16,25,0.06);color:#06202b}
+
+.sport-basketball{background:linear-gradient(135deg,#ffb347,#ff9800)}
+.sport-tennis{background:linear-gradient(135deg,#7bd389,#4caf50)}
+.sport-football{background:linear-gradient(135deg,#74b9ff,#2b8cff)}
+
+/* colored left accent for cards */
+.field-card.sport-football{border-left-color:#2b8cff}
+.field-card.sport-basketball{border-left-color:#ff9800}
+.field-card.sport-tennis{border-left-color:#4caf50}
+
+/* stronger icon backgrounds for type-cards */
+.type-card .icon.sport-football{background:linear-gradient(135deg,#74b9ff,#2b8cff);box-shadow:0 8px 20px rgba(43,140,255,0.18)}
+.type-card .icon.sport-basketball{background:linear-gradient(135deg,#ffb347,#ff9800);box-shadow:0 8px 20px rgba(255,152,0,0.18)}
+.type-card .icon.sport-tennis{background:linear-gradient(135deg,#7bd389,#4caf50);box-shadow:0 8px 20px rgba(76,175,80,0.18)}
+
+.empty{padding:24px;text-align:center;color:rgba(255,255,255,0.7);margin-top:8px}
+
+/* NAVBAR */
+.navbar{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;margin-bottom:18px}
+.nav-left a{color:rgba(255,255,255,0.85);margin-right:14px;text-decoration:none;font-weight:600}
+.nav-left a:hover{color:#00c6ff}
+.nav-right{display:flex;align-items:center;gap:12px}
+.welcome-text{color:rgba(255,255,255,0.9);font-weight:600}
+.logout-btn{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.06);padding:8px 12px;border-radius:8px;color:#fff;cursor:pointer}
+.logout-btn:hover{background:rgba(255,255,255,0.09)}
+
+/* backdrop blur for inner card to feel glassy */
+.fields-page-inner{backdrop-filter: blur(6px)}
+
+@media (max-width:880px){
+  .types-grid{grid-template-columns:1fr}
+}
+
+@media (max-width:640px){
+  .fields-page{padding:18px}
+  .field-icon{width:68px;height:68px;font-size:26px}
+}
+
+/* CHUYỂN BỐ CỤC VỀ HÀNG DỌC */
+.fields-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Cho hero full width và canh giữa */
+.hero-banner {
+  width: 100%;
+  max-width: 1200px;
+  margin-top: 10px;
+}
+
+/* Canh giữa danh sách loại sân */
+.types-container {
+  width: 100%;
+  max-width: 1200px;
+}
+
+
+.type-card {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hình nhỏ góc phải */
+.type-img {
+  position: absolute;
+  right: 20px;
+  top: 16px;
+  width: 124px;
+  height:100px;
+  object-fit: contain;
+  opacity: 0.92;
+  transition: 0.25s;
+  filter: drop-shadow(0 0 6px rgba(0,255,230,0.35));
+}
+
+.type-card:hover .type-img {
+  transform: scale(1.1) rotate(3deg);
+  opacity: 1;
+}

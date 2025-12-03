@@ -1,0 +1,88 @@
+.detail-container {
+  display: flex;
+  gap: 40px;
+  padding: 40px 10%;
+  flex-wrap: wrap;
+}
+
+/* Bên trái (ảnh) */
+.detail-left {
+  flex: 1;
+  min-width: 300px;
+}
+
+.detail-image {
+  width: 100%;
+  border-radius: 15px;
+  box-shadow: 0px 10px 25px rgba(0,0,0,0.15);
+}
+
+.detail-caption {
+  margin-top: 12px;
+  font-style: italic;
+  opacity: 0.8;
+}
+
+/* Bên phải (thông tin) */
+.detail-right {
+  flex: 1;
+  min-width: 330px;
+}
+
+.smooth-right {
+  margin-left: 30px; /* 🔥 Đẩy qua phải cho cân */
+}
+
+.detail-title {
+  color: #0b3e81;
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.detail-info p {
+  font-size: 18px;
+  margin: 15px 0;
+}
+
+.btn-booknow {
+  background: #00e676;
+  padding: 14px 30px;
+  font-size: 18px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  color: black;
+  font-weight: 600;
+  transition: 0.25s;
+}
+
+.btn-booknow:hover {
+  transform: scale(1.05);
+  background: #00c853;
+}
+
+/* GOOGLE MAP */
+.map-container {
+  width: 100%;
+  margin-top: 40px;
+}
+
+.map-container h2 {
+  margin-bottom: 15px;
+  color: #0b3e81;
+  font-size: 24px;
+}
+
+
+/* Mini map nhỏ dưới thông tin */
+.mini-map-box {
+  margin-top: 20px;
+  width: 90%;
+}
+
+.mini-map-box h3 {
+  margin-bottom: 10px;
+  font-size: 18px;
+  color: #0b3e81;
+}

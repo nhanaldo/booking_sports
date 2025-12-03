@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import API from "../api";
+import "./MyBookingsNew.css";
 
 export default function MyBookings() {
   const [list, setList] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // 🟢 Load danh sách đặt sân của user
+  // Load bookings
   const loadBookings = async () => {
     try {
       const res = await API.get("/bookings/my");
@@ -23,23 +25,24 @@ export default function MyBookings() {
     loadBookings();
   }, []);
 
-  // 🔴 Hủy đặt sân
+  // Cancel
   const cancelBooking = async (id) => {
     if (!window.confirm("Bạn có chắc muốn hủy đặt sân này?")) return;
+
     try {
       await API.put(`/bookings/${id}/cancel`);
       alert("Đã hủy đặt sân thành công!");
-      setList((prev) => prev.filter((b) => b._id !== id)); // Ẩn ngay lập tức
-
+      setList((prev) => prev.filter((b) => b._id !== id));
     } catch (err) {
       alert("Lỗi khi hủy đặt sân");
       console.error(err);
     }
   };
 
-  // 🕓 Định dạng ngày tháng
+  // Format date
   const formatDateTime = (dateStr, showTime = false) => {
     if (!dateStr) return "Chưa có dữ liệu";
+
     const d = new Date(dateStr);
 
     if (showTime)
@@ -58,87 +61,90 @@ export default function MyBookings() {
       });
   };
 
-
-  if (loading) return <p>⏳ Đang tải dữ liệu...</p>;
+  if (loading)
+    return (
+      <div className="loading-screen">
+        <span className="loader"></span>
+        <p>Đang tải dữ liệu...</p>
+      </div>
+    );
 
   if (!list.length)
-    return <p>📭 Bạn chưa đặt sân nào. Hãy đặt sân ngay hôm nay!</p>;
+    return (
+      <div className="empty-screen">
+        <img src="https://cdn-icons-png.flaticon.com/512/4076/4076505.png" alt="empty" />
+        <p>Bạn chưa có lịch đặt sân nào</p>
+        <Link to="/fields" className="empty-btn">Đặt sân ngay</Link>
+      </div>
+    );
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h2 style={{ textAlign: "center", marginBottom: "20px" }}>
-        🗓️ Lịch đặt sân của tôi
-      </h2>
+    <div className="booking-layout">
 
-      {list.map((b) => (
-        <div
-          key={b._id}
-          style={{
-            margin: "15px auto",
-            border: "1px solid #ccc",
-            borderRadius: "10px",
-            padding: "15px",
-            maxWidth: "500px",
-            backgroundColor: "#f9f9f9",
-            boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
-          }}
-        >
-          <h3 style={{ color: "#2e7d32" }}>
-            {b.field_name || b.field?.name || "Sân thể thao"}
-          </h3>
-          <p>
-            <b>⚽ Loại sân:</b> {b.sport_type || "Không rõ"}
-          </p>
-          <p>
-            <b>📍 Địa điểm:</b>{" "}
-            {b.field_location || b.field?.location || "Chưa có thông tin"}
-          </p>
-          <p>
-            <b>💰 Giá:</b>{" "}
-            {b.field_price
-              ? b.field_price.toLocaleString("vi-VN") + " VNĐ"
-              : "Không rõ"}
-          </p>
-          <p>📅 <b>Ngày đặt:</b> {formatDateTime(b.createdAt)}</p>
-          <p>
-            🕑 <b>Ngày chơi:</b> {formatDateTime(b.booking_date)} (
-            {b.time_slot})
-          </p>
-          <p>
-            <b>📌 Trạng thái:</b>{" "}
-            <span
-              style={{
-                color:
-                  b.status === "booked"
-                    ? "green"
-                    : b.status === "cancelled"
-                      ? "red"
-                      : "gray",
-                fontWeight: "bold",
-              }}
-            >
+      {/* LEFT SIDE */}
+      <div className="left-panel">
 
-            </span>
-          </p>
-
-          {b.status !== "cancelled" && (
-            <button
-              onClick={() => cancelBooking(b._id)}
-              style={{
-                backgroundColor: "#d32f2f",
-                color: "#fff",
-                border: "none",
-                borderRadius: "8px",
-                padding: "8px 14px",
-                cursor: "pointer",
-                marginTop: "10px",
-              }}
-            >
-              ❌ Hủy đặt sân
-            </button>
-          )}
+        <div className="left-header">
+          <Link to="/fields" className="back-btn">← Quay lại</Link>
+          <h2>Lịch sử đặt sân</h2>
         </div>
-      ))}
+
+        <div className="booking-list">
+          {list.map((b) => (
+            <div className="booking-item" key={b._id}>
+
+              <div className="item-top">
+                <h3 className="field-name">
+                  {b.field_name || b.field?.name || "Sân thể thao"}
+                </h3>
+
+                <span className={`status-tag ${b.status === "booked" ? "status-ok" : "status-cancel"}`}>
+                  {b.status === "booked" ? "Đã đặt" : "Đã hủy"}
+                </span>
+              </div>
+
+              <div className="item-info">
+                <p><strong>Loại sân:</strong> {b.sport_type}</p>
+                <p><strong>Địa điểm:</strong> {b.field_location || b.field?.location}</p>
+                <p><strong>Giá:</strong> {b.field_price?.toLocaleString("vi-VN")} VNĐ</p>
+              </div>
+
+              <div className="item-time">
+                <p>📅 <strong>Ngày đặt:</strong> {formatDateTime(b.createdAt)}</p>
+                <p>🕑 <strong>Ngày chơi:</strong> {formatDateTime(b.booking_date)} ({b.time_slot})</p>
+              </div>
+
+              <div className="item-footer">
+                <span className="item-id">ID: {b._id}</span>
+
+                {b.status !== "cancelled" && (
+                  <button
+                    className="btn-cancel"
+                    onClick={() => cancelBooking(b._id)}
+                  >
+                    Hủy đặt
+                  </button>
+                )}
+              </div>
+
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* RIGHT SIDE */}
+      <div className="right-panel">
+        <img
+          src="https://images.unsplash.com/photo-1521412644187-c49fa049e84d"
+          alt="sports"
+          className="side-image"
+        />
+
+        <Link to="/fields" className="btn-continue">
+          Tiếp tục đặt sân
+        </Link>
+      </div>
+
     </div>
   );
 }

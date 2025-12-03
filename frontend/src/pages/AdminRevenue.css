@@ -1,0 +1,92 @@
+.admin-revenue-page {
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;      /* ⭐ Căn giữa toàn trang */
+}
+
+.admin-revenue-page h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Hộp filter */
+.filter-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: white;
+    padding: 14px 20px;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    margin-bottom: 25px;
+}
+
+/* Input ngày / tháng */
+.filter-box input[type="date"],
+.filter-box input[type="month"] {
+    padding: 8px 12px;
+    font-size: 16px;
+}
+
+/* Nút lọc */
+.filter-box button {
+    padding: 8px 14px;
+    border-radius: 6px;
+    border: none;
+    background: #0b3e81;
+    color: white;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+/* Nút Excel */
+.excel-btn {
+    background: #0a8fdd !important;
+}
+
+/* Table */
+.revenue-table {
+    width: 90%;
+    max-width: 1000px;
+    border-collapse: collapse;
+    margin-bottom: 25px;
+}
+
+.revenue-table th, 
+.revenue-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+}
+
+.revenue-table th {
+    background: #0b3e81;
+    color: white;
+}
+
+/* Tổng doanh thu */
+.total-box {
+    background: #0b3e81;
+    color: white;
+    padding: 14px 20px;
+    border-radius: 10px;
+    font-size: 20px;
+    width: fit-content;
+}
+.all-btn {
+    background: #888;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-left: 8px;
+}
+
+.all-btn:hover {
+    background: #666;
+}

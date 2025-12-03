@@ -1,0 +1,146 @@
+/* MAIN LAYOUT */
+.booking-layout {
+  display: flex;
+  gap: 32px;
+  padding: 30px;
+  background: #f3f5f9;
+  min-height: 100vh;
+}
+
+/* LEFT PANEL */
+.left-panel {
+  flex: 1;
+  background: #fff;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+}
+
+.left-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.back-btn {
+  padding: 6px 12px;
+  background: #ececec;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #555;
+}
+
+.booking-list {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* ITEM CARD */
+.booking-item {
+  background: #fff;
+  padding: 18px;
+  border-radius: 14px;
+  border: 1px solid #ededed;
+  transition: 0.25s;
+}
+
+.booking-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+.item-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.field-name {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* STATUS TAG */
+.status-tag {
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: white;
+}
+
+.status-ok {
+  background: #2ecc71;
+}
+
+.status-cancel {
+  background: #e74c3c;
+}
+
+/* INFO */
+.item-info,
+.item-time {
+  font-size: 15px;
+  margin-top: 10px;
+}
+
+/* FOOTER */
+.item-footer {
+  margin-top: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn-cancel {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-cancel:hover {
+  background: #c0392b;
+}
+
+/* RIGHT PANEL */
+.right-panel {
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  text-align: center;
+}
+
+.side-image {
+  width: 100%;
+  border-radius: 18px;
+  object-fit: cover;
+  height: 400px;
+}
+
+.btn-continue {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  background: #3498db;
+  color: white;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.btn-continue:hover {
+  background: #2980b9;
+}
+
+/* LOADING */
+.loading-screen,
+.empty-screen {
+  text-align: center;
+  padding: 40px;
+}

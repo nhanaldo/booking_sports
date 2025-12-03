@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import API from "../api";
+import "./CancelledHistory.css";
 
 export default function CancelledBookings() {
+  const [selectedType, setSelectedType] = useState(localStorage.getItem('selectedType') || 'Tất cả');
   const [list, setList] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -21,12 +24,11 @@ export default function CancelledBookings() {
     loadHistory();
   }, []);
 
-  // 🗑 Xóa 1 lịch sử hủy
   const deleteCancelled = async (id) => {
     if (!window.confirm("Bạn có chắc muốn xóa lịch sử này không?")) return;
     try {
       await API.delete(`/bookings/cancelled/${id}`);
-      setList((prev) => prev.filter((item) => item._id !== id)); // ✅ Cập nhật giao diện ngay
+      setList(prev => prev.filter(item => item._id !== id));
     } catch (err) {
       alert("Lỗi khi xóa lịch sử hủy");
       console.error(err);
@@ -36,65 +38,49 @@ export default function CancelledBookings() {
   const formatDateTime = (dateStr, showTime = false) => {
     if (!dateStr) return "Chưa có dữ liệu";
     const d = new Date(dateStr);
-    if (showTime)
-      return d.toLocaleString("vi-VN", {
-        hour: "2-digit",
-        minute: "2-digit",
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-      });
-    else
-      return d.toLocaleDateString("vi-VN", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-      });
+
+    return showTime
+      ? d.toLocaleString("vi-VN", { hour: "2-digit", minute: "2-digit", day: "2-digit", month: "2-digit", year: "numeric" })
+      : d.toLocaleDateString("vi-VN", { day: "2-digit", month: "2-digit", year: "numeric" });
   };
 
-  if (loading) return <p>⏳ Đang tải dữ liệu...</p>;
-  if (!list.length) return <p>📭 Bạn chưa hủy sân nào.</p>;
+  if (loading) return <p className="ch-loading">⏳ Đang tải dữ liệu...</p>;
+  if (!list.length) return <p className="ch-empty">📭 Không có lịch sử hủy sân nào.</p>;
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h2 style={{ textAlign: "center", marginBottom: "20px" }}>
-        🗑️ Lịch sử hủy đặt sân
-      </h2>
+    <div className="ch-page">
+      <div className="ch-container">
 
-      {list.map((b) => (
-        <div
-          key={b._id}
-          style={{
-            margin: "15px auto",
-            border: "1px solid #ccc",
-            borderRadius: "10px",
-            padding: "15px",
-            maxWidth: "500px",
-            backgroundColor: "#fff3f3",
-            boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
-          }}
-        >
-          <h3 style={{ color: "#d32f2f" }}>{b.field_name || "Sân thể thao"}</h3>
-          <p><b>⚽ Loại sân:</b> {b.sport_type}</p>
-          <p><b>📅 Ngày chơi:</b> {formatDateTime(b.booking_date)} ({b.time_slot})</p>
-          <p><b>🕓 Hủy lúc:</b> {formatDateTime(b.cancelled_at, true)}</p>
+        
 
-          <button
-            onClick={() => deleteCancelled(b._id)}
-            style={{
-              marginTop: 10,
-              backgroundColor: "#d32f2f",
-              color: "#fff",
-              border: "none",
-              borderRadius: "6px",
-              padding: "6px 12px",
-              cursor: "pointer",
-            }}
-          >
-            🗑 Xóa
-          </button>
+        <h2 className="ch-title">🗑️ Lịch sử hủy đặt sân</h2>
+
+        <div className="ch-grid">
+          {list.map(b => (
+            <article className="ch-card" key={b._id}>
+              
+              <header className="ch-card-header">
+                <h3>{b.field_name || "Sân thể thao"}</h3>
+                <span className="ch-badge-cancel">ĐÃ HỦY</span>
+              </header>
+
+              <div className="ch-info">
+                <div><strong>Loại sân:</strong> {b.sport_type}</div>
+                <div><strong>Ngày chơi:</strong> {formatDateTime(b.booking_date)} ({b.time_slot})</div>
+                <div><strong>Thời gian hủy:</strong> {formatDateTime(b.cancelled_at, true)}</div>
+              </div>
+
+              <div className="ch-footer">
+                <span className="ch-id">ID: {b._id}</span>
+                <button className="ch-delete-btn" onClick={() => deleteCancelled(b._id)}>
+                  🗑 Xóa lịch sử
+                </button>
+              </div>
+
+            </article>
+          ))}
         </div>
-      ))}
+      </div>
     </div>
   );
 }

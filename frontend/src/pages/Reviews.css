@@ -1,0 +1,131 @@
+/* Layout 2 cột */
+.reviews-wrapper {
+    display: flex;
+    width: 90%;
+    margin: 30px auto;
+    gap: 40px;
+}
+
+/* LEFT COLUMN */
+.reviews-left {
+    width: 45%;
+}
+
+/* Title */
+.left-title {
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+/* RIGHT COLUMN */
+.reviews-right {
+    width: 55%;
+    text-align: center;
+}
+
+.review-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #0b3e81;
+}
+
+/* ⭐ CHỌN SAO */
+.rating-box {
+    margin-bottom: 15px;
+}
+
+.stars-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+/* SAO MẶC ĐỊNH = TRẮNG */
+.star-select {
+    font-size: 40px;
+    cursor: pointer;
+    color: white; 
+    -webkit-text-stroke: 1.5px #f3d889; /* viền vàng */
+    transition: 0.2s ease;
+}
+
+/* Hover */
+.star-select:hover {
+    transform: scale(1.15);
+    color: #ffcc00;
+    -webkit-text-stroke: 0px;
+}
+
+/* Sao được chọn */
+.star-select.active {
+    color: #ffb700;
+    -webkit-text-stroke: 0px;
+    transform: scale(1.12);
+}
+
+.rating-label {
+    margin-top: 8px;
+    color: #555;
+}
+
+/* FORM */
+.review-form textarea {
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.review-form button {
+    width: 100%;
+    background: #083b85;
+    padding: 14px;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.review-form button:hover {
+    background: #062c66;
+}
+
+/* ⭐ SAO TRONG DANH SÁCH */
+.stars-display {
+    display: flex;
+    gap: 5px;
+}
+
+/* Trắng khi chưa active */
+.star-show {
+    font-size: 22px;
+    color: white;
+    -webkit-text-stroke: 1px #f3d889;
+}
+
+/* Active = vàng */
+.star-show.active {
+    color: #ffb700;
+    -webkit-text-stroke: 0px;
+}
+
+/* Review item */
+.review-item {
+    padding: 15px;
+    margin-bottom: 15px;
+    background: #f5f7fb;
+    border-radius: 12px;
+    border-left: 4px solid #0b3e81;
+}
+
+.review-item .date {
+    display: block;
+    margin-top: 5px;
+    font-size: 12px;
+    color: #777;
+}

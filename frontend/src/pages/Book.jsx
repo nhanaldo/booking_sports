@@ -1,150 +1,218 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import API from "../api";
+import Swal from "sweetalert2";   // popup đẹp
+import "./Book.css";
+import socket from "../socket";
 
 export default function Book() {
   const { id } = useParams();
   const nav = useNavigate();
-  const sportType = localStorage.getItem("selectedType") || "Bóng đá";
+  const location = useLocation();
 
-  const [date, setDate] = useState("");
-  const [slot, setSlot] = useState("");
-  const [price, setPrice] = useState(null);
+  const editingBooking = location.state?.editingBooking || null;
+  const isEdit = !!editingBooking;
+
+  const sportType =
+    editingBooking?.sport_type ||
+    localStorage.getItem("selectedType") ||
+    "Bóng đá";
+
+  const [date, setDate] = useState(editingBooking?.booking_date || "");
+  const [slot, setSlot] = useState(editingBooking?.time_slot || "");
+  const [price, setPrice] = useState(editingBooking?.price || null);
   const [timeSlots, setTimeSlots] = useState([]);
-  const [bookedSlots, setBookedSlots] = useState([]); // 🟢 các khung giờ đã có người đặt
+  const [bookedSlots, setBookedSlots] = useState([]);
 
-  // 🟢 Lấy tất cả khung giờ của môn thể thao
+  const [fieldInfo, setFieldInfo] = useState({
+    field_name: "",
+    field_location: "",
+  });
+
+  // Lấy thông tin sân
   useEffect(() => {
-    const fetchTimeSlots = async () => {
-      try {
-        const res = await API.get(`/timeslots/${sportType.toLowerCase()}`);
-        setTimeSlots(res.data);
-      } catch (err) {
-        console.error("Lỗi tải khung giờ:", err);
-        alert("Không thể tải danh sách khung giờ từ server.");
+    API.get(`/fields/${id}`)
+      .then((res) => setFieldInfo(res.data))
+      .catch((err) => console.error("Lỗi lấy thông tin sân:", err));
+  }, [id]);
+
+  const convertType = (type) => {
+    switch (type.toLowerCase()) {
+      case "bóng đá":
+        return "football";
+      case "bóng rổ":
+        return "basketball";
+      case "quần vợt":
+        return "tennis";
+      default:
+        return type.toLowerCase();
+    }
+  };
+
+  // 🟢 Lắng nghe realtime từ người khác đặt
+  useEffect(() => {
+    function handleRealtime(data) {
+      const sameField = String(data.field_id) === String(id);
+      const sameDate = data.date === date;
+
+      if (!sameField || !sameDate) return;
+
+      // Nếu slot đang chọn bị chiếm → reset + popup
+      if (slot === data.slot) {
+        Swal.fire({
+          icon: "warning",
+          title: "Khung giờ đã bị đặt!",
+          text: `Khung giờ ${slot} vừa được đặt bởi người khác.`,
+          confirmButtonText: "OK",
+        });
+
+        setSlot("");
+        setPrice(null);
       }
-    };
-    fetchTimeSlots();
-  }, [sportType]);
 
-  // 🟢 Khi chọn ngày → gọi API xem ngày đó có giờ nào bị đặt rồi
-  useEffect(() => {
-    if (!date) {
-      setBookedSlots([]);
-      return;
+      // Cập nhật UI
+      setBookedSlots((prev) =>
+        prev.includes(data.slot) ? prev : [...prev, data.slot]
+      );
+
+      // Thông báo slot khác bị chiếm
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: "warning",
+        title: `Khung giờ ${data.slot} vừa có người đặt!`,
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+        background: "#fff",
+      });
+
     }
 
-    const fetchBookedSlots = async () => {
-      try {
-        const res = await API.get(`/bookings/booked-slots/${id}/${date}`);
-        setBookedSlots(res.data || []);
-      } catch (err) {
-        console.error("Lỗi lấy booked slots:", err);
-        setBookedSlots([]);
-      }
-    };
+    socket.on("slotBooked", handleRealtime);
 
-    fetchBookedSlots();
-  }, [date, id]);
+    return () => socket.off("slotBooked", handleRealtime);
+  }, [id, date, slot]);
 
-  // 🟢 Khi chọn khung giờ → hiển thị giá
+  // Lấy danh sách khung giờ
+  useEffect(() => {
+    if (isEdit) return;
+
+    API.get(`/timeslots/${convertType(sportType)}`)
+      .then((res) => setTimeSlots(res.data))
+      .catch((err) => console.error("Lỗi tải khung giờ:", err));
+  }, [sportType, isEdit]);
+
+  // Lấy slot đã đặt theo ngày
+  useEffect(() => {
+    if (!date || isEdit) return;
+
+    API.get(`/bookings/booked-slots/${id}/${date}`)
+      .then((res) => setBookedSlots(res.data || []))
+      .catch((err) => console.error("Lỗi lấy booked slots:", err));
+  }, [date, id, isEdit]);
+
+  // Khi chọn slot
   const handleSlotChange = (e) => {
     const selected = e.target.value;
     setSlot(selected);
 
-    const found = timeSlots.find((s) => `${s.start}-${s.end}` === selected);
+    const found = timeSlots.find(
+      (s) => `${s.start}-${s.end}` === selected
+    );
+
     setPrice(found ? found.price : null);
   };
 
-  // 🟢 Gửi yêu cầu đặt sân
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await API.post("/bookings", {
-        field_id: id,
-        sport_type: sportType,
-        booking_date: date,
-        time_slot: slot,
+  const handleGoToPayment = () => {
+    if (!date || !slot || !price) {
+      Swal.fire({
+        icon: "error",
+        title: "Thiếu thông tin!",
+        text: "Vui lòng chọn ngày và khung giờ.",
       });
-      alert("✅ Đặt sân thành công!");
-      nav("/fields");
-    } catch (err) {
-      alert(err.response?.data?.message || "Lỗi khi đặt sân");
+      return;
     }
+
+    nav("/payment", {
+      state: {
+        id,
+        sportType,
+        date,
+        slot,
+        price,
+        fieldInfo,
+      },
+    });
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ textAlign: "center", marginTop: 40 }}>
-      <h2>Đặt sân — {sportType}</h2>
+    <div className="booking-container">
+      <div className="booking-card">
 
-      {/* 🗓️ Chọn ngày */}
-      <div style={{ marginTop: 20 }}>
-        <label>Ngày: </label>
-        <input
-          type="date"
-          value={date}
-          min={new Date().toISOString().split("T")[0]}
-          onChange={(e) => setDate(e.target.value)}
-          required
-        />
+        {/* HEADER */}
+        <div className="booking-header">
+          <h2>{isEdit ? "✏️ Sửa đặt sân" : `Đặt sân — ${sportType}`}</h2>
+        </div>
+
+        {/* FIELD INFO */}
+        {!isEdit && (
+          <div className="field-box">
+            <p><strong>Tên sân:</strong> {fieldInfo.field_name}</p>
+            <p><strong>Khu:</strong> {fieldInfo.field_location}</p>
+          </div>
+        )}
+
+        {/* FORM */}
+        <div className="form-section">
+          <label>Ngày đặt</label>
+          <input
+            type="date"
+            value={date}
+            min={new Date().toISOString().split("T")[0]}
+            onChange={(e) => setDate(e.target.value)}
+          />
+
+          {!isEdit && (
+            <>
+              <label>Khung giờ</label>
+              <select value={slot} onChange={handleSlotChange} disabled={!date}>
+                <option value="">-- Chọn khung giờ --</option>
+
+                {timeSlots.map((s) => {
+                  const label = `${s.start}-${s.end}`;
+                  const isBooked = bookedSlots.includes(label);
+                  return (
+                    <option key={s._id} value={label} disabled={isBooked}>
+                      {label} — {s.price.toLocaleString()}đ{" "}
+                      {isBooked ? "(Đã đặt)" : ""}
+                    </option>
+                  );
+                })}
+              </select>
+            </>
+          )}
+
+          {price && (
+            <div className="price-box">
+              💰 Giá: <span>{price.toLocaleString()} VNĐ</span>
+            </div>
+          )}
+
+          <div className="bottom-actions">
+            <button className="cancel-btn" onClick={() => nav(-1)}>
+              Hủy
+            </button>
+
+            {!isEdit && (
+              <button className="pay-btn" onClick={handleGoToPayment}>
+                Chuyển qua trang thanh toán
+              </button>
+            )}
+
+          </div>
+        </div>
       </div>
-
-      {/* 🕑 Chọn khung giờ */}
-      <div style={{ marginTop: 20 }}>
-        <label>Khung giờ: </label>
-        <select
-          value={slot}
-          onChange={handleSlotChange}
-          required
-          disabled={!date} // chưa chọn ngày thì ko cho chọn giờ
-        >
-          <option value="">-- Chọn khung giờ --</option>
-          {timeSlots.map((s) => {
-            const timeLabel = `${s.start}-${s.end}`;
-            const isBooked = bookedSlots.includes(timeLabel);
-
-            return (
-              <option
-                key={s._id}
-                value={timeLabel}
-                disabled={isBooked}
-                style={{
-                  color: isBooked ? "#999" : "#000",
-                  backgroundColor: isBooked ? "#ffeaea" : "#fff",
-                  fontStyle: isBooked ? "italic" : "normal",
-                }}
-              >
-                {s.start} - {s.end} — {s.price.toLocaleString()} VNĐ{" "}
-                {isBooked ? "(Đã đặt)" : ""}
-              </option>
-            );
-          })}
-        </select>
-      </div>
-
-      {/* 💰 Giá */}
-      {price && (
-        <p style={{ marginTop: 15, fontWeight: "bold", color: "#1976d2" }}>
-          💰 Giá: {price.toLocaleString()} VNĐ
-        </p>
-      )}
-
-      <button
-        type="submit"
-        disabled={!date || !slot || bookedSlots.includes(slot)}
-        style={{
-          marginTop: 30,
-          background: "#4caf50",
-          color: "#fff",
-          padding: "10px 20px",
-          borderRadius: 8,
-          border: "none",
-          cursor: bookedSlots.includes(slot) ? "not-allowed" : "pointer",
-          opacity: bookedSlots.includes(slot) ? 0.6 : 1,
-        }}
-      >
-        ✅ Xác nhận đặt sân
-      </button>
-    </form>
+    </div>
   );
 }

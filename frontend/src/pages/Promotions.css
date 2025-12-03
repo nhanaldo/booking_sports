@@ -1,0 +1,259 @@
+/* ===========================
+   PROMOTIONS PAGE
+=========================== */
+.promo-page {
+  padding: 40px 8%;
+  min-height: 100vh;
+  background: linear-gradient(145deg, #0b1b34, #062d66);
+  color: #fff;
+}
+
+
+/* ===========================
+   HEADER
+=========================== */
+.promo-header {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.promo-title {
+  font-size: 32px;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.promo-sub {
+  opacity: 0.85;
+}
+
+.promo-add-btn {
+  background: #00c3ff;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+  color: #fff;
+  transition: 0.25s;
+}
+
+.promo-add-btn:hover {
+  background: #38d4ff;
+  transform: translateY(-2px);
+}
+
+
+/* ===========================
+   LIST LAYOUT
+=========================== */
+.promo-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+  justify-content: center;
+}
+
+
+/* ===========================
+   CARD SMALL
+=========================== */
+.promo-card-small {
+  width: 280px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 12px;
+  overflow: hidden;
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255,255,255,0.12);
+  transition: 0.25s ease;
+}
+
+.promo-card-small:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 22px rgba(0,150,255,0.35);
+}
+
+/* Ảnh */
+.promo-img-box {
+  width: 100%;
+  height: 140px;
+  overflow: hidden;
+}
+
+.promo-img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Nội dung */
+.promo-small-info {
+  padding: 12px 15px;
+}
+
+.promo-small-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.promo-small-desc {
+  margin-top: 6px;
+  opacity: 0.85;
+  font-size: 14px;
+  line-height: 1.35;
+  height: 45px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+/* ===========================
+   BUTTONS
+=========================== */
+.promo-detail-btn {
+  width: 100%;
+  padding: 8px 0;
+  border: none;
+  border-radius: 6px;
+  background: #00aaff;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s;
+  margin-top: 10px;
+}
+
+.promo-detail-btn:hover {
+  background: #2ecbff;
+}
+
+.admin-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.promo-edit-btn,
+.promo-delete-btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.promo-edit-btn {
+  background: #ffaa00;
+}
+
+.promo-edit-btn:hover {
+  background: #ffc045;
+}
+
+.promo-delete-btn {
+  background: #ff4444;
+}
+
+.promo-delete-btn:hover {
+  background: #ff6e6e;
+}
+
+
+/* ===========================
+   MODAL POPUP
+=========================== */
+/* ===========================
+   MODAL POPUP — FIXED
+=========================== */
+.promo-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.78);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  animation: fadeIn 0.25s ease;
+  z-index: 1000;
+}
+
+.promo-modal-content {
+  width: 100%;
+  max-width: 420px;
+  max-height: 90vh; /* NGĂN MODAL TRÀN MÀN HÌNH */
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(14px);
+  border-radius: 20px;
+  padding: 22px;
+  text-align: center;
+  
+  overflow-y: auto; /* CHO CUỘN NHẸ KHI NỘI DUNG DÀI */
+  animation: scaleUp 0.25s ease;
+  position: relative;
+}
+
+/* Ảnh không cho vượt quá modal */
+.modal-img {
+  width: 100%;
+  max-height: 260px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+
+/* Nút đóng */
+.modal-close {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 24px;
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  cursor: pointer;
+}
+
+/* Nút đặt sân */
+.modal-book-btn {
+  width: 100%;
+  padding: 12px 0;
+  border: none;
+  border-radius: 10px;
+  background: #00aaff;
+  color: #fff;
+  font-weight: 700;
+  margin-top: 15px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.modal-book-btn:hover {
+  background: #34d0ff;
+}
+
+/* Text */
+.modal-desc {
+  margin-top: 10px;
+  opacity: 0.9;
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+
+
+/* ===========================
+   ANIMATIONS
+=========================== */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleUp {
+  from { transform: scale(0.85); }
+  to { transform: scale(1); }
+}

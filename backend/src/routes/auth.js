@@ -19,7 +19,7 @@ router.post("/forgot-password", async (req, res) => {
       expiresIn: "15m",
     });
 
-    const resetLink = `http://192.168.1.48:3000/reset-password/${token}`;
+    const resetLink = `http://localhost:3000/reset-password/${token}`;
     //Tạo link reset (frontend) chứa token. Khi user truy cập link này, 
     // frontend có thể hiển thị form nhập mật khẩu mới và gửi token ngược lại server để reset.
 

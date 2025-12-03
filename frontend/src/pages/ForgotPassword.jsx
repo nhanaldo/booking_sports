@@ -1,5 +1,6 @@
 import { useState } from "react";
 import API from "../api";
+import "./ForgotPassword.css";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -15,16 +16,32 @@ export default function ForgotPassword() {
   };
 
   return (
-    <form onSubmit={submit} style={{ display: "grid", gap: 8, maxWidth: 320 }}>
-      <h2>Quên mật khẩu</h2>
-      <input
-        type="email"
-        placeholder="Nhập email của bạn"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      <button>Gửi link đặt lại</button>
-    </form>
+    <div className="fp-container">
+      {/* LEFT */}
+      <div className="fp-left">
+        <form className="fp-card" onSubmit={submit}>
+          <h2 className="fp-title">Quên mật khẩu</h2>
+
+          <input
+            type="email"
+            className="fp-input"
+            placeholder="Nhập email của bạn"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+
+          <button className="fp-btn">Gửi link đặt lại</button>
+        </form>
+      </div>
+
+      {/* RIGHT */}
+      <div className="fp-right">
+        <h1 className="fp-banner-title">Lấy lại mật khẩu dễ dàng</h1>
+        <p className="fp-banner-desc">
+          Nhập email và chúng tôi sẽ gửi liên kết đặt lại mật khẩu cho bạn.
+        </p>
+      </div>
+    </div>
   );
 }

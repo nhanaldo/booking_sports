@@ -1,0 +1,129 @@
+/* ===== PAGE LAYOUT ===== */
+.ch-page {
+  display: flex;
+  justify-content: center;
+  padding: 30px;
+  background: #f5f6fa;
+  min-height: 100vh;
+}
+
+.ch-container {
+  width: 100%;
+  max-width: 950px;
+}
+
+/* ===== HEADER ===== */
+.ch-header {
+  margin-bottom: 10px;
+}
+
+.ch-back-btn {
+  color: #007bff;
+  text-decoration: none;
+  font-size: 15px;
+}
+
+.ch-back-btn:hover {
+  text-decoration: underline;
+}
+
+/* ===== TITLE ===== */
+.ch-title {
+  margin: 10px 0 20px;
+  font-size: 26px;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* ===== GRID ===== */
+.ch-grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 700px) {
+  .ch-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ===== CARD ===== */
+.ch-card {
+  background: #fff;
+  padding: 18px 20px;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: 0.2s ease;
+}
+
+.ch-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+
+/* ===== CARD HEADER ===== */
+.ch-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ch-card-header h3 {
+  font-size: 19px;
+  margin: 0;
+}
+
+.ch-badge-cancel {
+  background: #ff3b30;
+  padding: 4px 10px;
+  border-radius: 6px;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+/* ===== INFO BLOCK ===== */
+.ch-info {
+  margin: 12px 0;
+  color: #444;
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+/* ===== FOOTER ===== */
+.ch-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ch-id {
+  color: #888;
+  font-size: 12px;
+}
+
+/* ===== DELETE BUTTON ===== */
+.ch-delete-btn {
+  background: #d9534f;
+  border: none;
+  color: white;
+  padding: 7px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: 0.2s;
+}
+
+.ch-delete-btn:hover {
+  background: #c9302c;
+}
+
+/* ===== EMPTY / LOADING ===== */
+.ch-empty,
+.ch-loading {
+  text-align: center;
+  margin-top: 40px;
+  color: #777;
+  font-size: 15px;
+}
